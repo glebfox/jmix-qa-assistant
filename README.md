@@ -1,3 +1,180 @@
 # Jmix QA Checklist MVP
 
 A practical MVP tool for the Jmix Framework QA team: it turns a task description into clarifying questions and a structured draft checklist for testing.
+
+## What It Is
+
+This is not a platform and not an integration-heavy system. It is a separate repository with three simple parts:
+
+1. A Markdown knowledge base with QA patterns, Jmix-specific scenarios, risk areas, and recurring regressions.
+2. A task input template.
+3. A small local CLI that:
+   - selects relevant knowledge modules;
+   - generates clarifying questions;
+   - builds a draft checklist in Markdown.
+
+## Why This Is A Good MVP
+
+- It does not require access to the main Jmix Framework repository.
+- It does not require MCP, Jira, GitHub, TestRail, RAG, or a vector database.
+- Knowledge lives in plain Markdown files.
+- The logic can be validated on real tasks in the first week.
+- If the idea proves valuable, an LLM layer can be added later on top of the same knowledge base without changing the foundation.
+
+## MVP Concept
+
+### Workflow
+
+1. QA creates a task file from `templates/task.md`.
+2. QA runs the `ask` command to get clarifying questions.
+3. QA optionally adds answers in `answers.md`.
+4. QA runs the `generate` command and gets `checklist.md`.
+5. QA uses the result as a starting point and adjusts it for the specific task.
+
+### What Powers It
+
+- `knowledge/patterns/` for generic QA patterns such as feature, bugfix, and smoke coverage.
+- `knowledge/jmix/` for Jmix-specific scenarios.
+- `knowledge/regressions/` for recurring hotspots and regression reminders.
+
+Each knowledge module contains:
+
+- applicability triggers;
+- clarifying questions;
+- structured checklist items;
+- risk notes.
+
+## Minimal Repository Structure
+
+```text
+.
+├── README.md
+├── qa_mvp.py
+├── knowledge/
+│   ├── patterns/
+│   ├── jmix/
+│   └── regressions/
+├── templates/
+│   ├── task.md
+│   └── answers.md
+├── examples/
+│   ├── feature-task.md
+│   └── feature-answers.md
+└── docs/
+    └── launch-plan.md
+```
+
+## Knowledge Base Format
+
+For the MVP, Markdown with lightweight front matter is enough:
+
+```md
+---
+id: flow-ui-view
+title: Flow UI view changes
+applies_to: feature, bugfix
+triggers: flow-ui, view, detail view, list view, action
+always: false
+---
+## Questions
+- Which views are affected?
+
+## Checklist
+### Core Flow
+- The view opens from the expected entry point.
+
+## Risks
+- Navigation or route parameters may break.
+```
+
+Why this format:
+
+- QA engineers and developers can update it without generators or IDE-specific tooling.
+- It is easy to review in GitHub.
+- It is easy to start with 5-10 files instead of building an oversized knowledge system.
+
+## Input Format
+
+The first version only needs one Markdown task file:
+
+```md
+# Task
+Title: Add deactivate action to user detail view
+Type: feature
+Labels: flow-ui, security, entity
+
+## Description
+...
+
+## Acceptance Criteria
+- ...
+
+## Changed Areas
+- flow-ui
+- security
+
+## Known Risks
+- ...
+
+## Context
+...
+```
+
+`answers.md` is optional and can be added after the first pass of clarifying questions.
+
+## Output Format
+
+The result is a plain Markdown checklist that can be used in a PR, issue, or personal QA notes:
+
+- short task summary;
+- applied knowledge modules;
+- clarifications or open questions;
+- sectioned checklist;
+- focus areas and risks.
+
+## Simple Usage
+
+```bash
+python3 qa_mvp.py ask examples/feature-task.md
+python3 qa_mvp.py generate examples/feature-task.md --answers examples/feature-answers.md --out output/checklist.md
+```
+
+## First Version Launch Plan
+
+1. Take 5-10 real Jmix QA tasks with different change types.
+2. Fill in `task.md` for each one.
+3. Generate questions and checklists.
+4. Ask QA to rate each checklist on three criteria:
+   - useful as a starting point;
+   - catches missed scenarios;
+   - not too noisy.
+5. Update the knowledge base only where it clearly improves output quality.
+6. Keep a list of task types where the MVP is already useful and a list of task types that are intentionally out of scope for now.
+
+See [docs/launch-plan.md](docs/launch-plan.md) for the pilot plan.
+
+## MVP Limitations
+
+- The checklist does not replace QA analysis.
+- Output quality depends on input quality.
+- The MVP covers only the most common and repeatable task types.
+- Without an LLM, the logic remains heuristic, so some wording will stay generic.
+- Some questions will still depend on team knowledge and domain context.
+
+## Signs That It Is Worth Expanding
+
+- QA actually uses it on real tasks, not just for demos.
+- The checklist regularly reminds people about 1-3 important scenarios.
+- Time spent preparing a test pass goes down.
+- Knowledge base updates are driven by real defects and regressions.
+- The team can name concrete task categories where the MVP already helps.
+
+## What Not To Build In Version One
+
+- Jira, GitHub, or TestRail connectors;
+- MCP and tool calling;
+- a complex UI platform;
+- RAG or vector storage;
+- automatic diff reading from the main Jmix repository;
+- an attempt to cover every possible Jmix task type from day one;
+- complex scoring, prioritization, or analytics.
