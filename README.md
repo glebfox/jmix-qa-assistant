@@ -2,13 +2,15 @@
 
 A practical MVP tool for the Jmix Framework QA team: it turns a task description into clarifying questions and a structured draft checklist for testing.
 
+The intended workflow is agent-first. An AI assistant reads the task input and the local knowledge base, asks clarifying questions when needed, and produces the checklist. The local `qa_mvp.py` script is a small deterministic helper for validating the knowledge format and generating a basic fallback draft.
+
 ## What It Is
 
 This is not a platform and not an integration-heavy system. It is a separate repository with three simple parts:
 
 1. A Markdown knowledge base with QA patterns, Jmix-specific scenarios, risk areas, and recurring regressions.
 2. A task input template.
-3. A small local CLI that:
+3. A small local CLI helper that:
    - selects relevant knowledge modules;
    - generates clarifying questions;
    - builds a draft checklist in Markdown.
@@ -18,18 +20,25 @@ This is not a platform and not an integration-heavy system. It is a separate rep
 - It does not require access to the main Jmix Framework repository.
 - It does not require MCP, Jira, GitHub, TestRail, RAG, or a vector database.
 - Knowledge lives in plain Markdown files.
-- The logic can be validated on real tasks in the first week.
-- If the idea proves valuable, an LLM layer can be added later on top of the same knowledge base without changing the foundation.
+- The knowledge structure can be validated on real tasks in the first week.
+- The same knowledge base can be used by an AI assistant and by the local fallback script.
 
 ## MVP Concept
 
 ### Workflow
 
 1. QA creates a task file from `templates/task.md`.
-2. QA runs the `ask` command to get clarifying questions.
-3. QA optionally adds answers in `answers.md`.
-4. QA runs the `generate` command and gets `checklist.md`.
+2. QA asks an AI assistant to read the task and the knowledge base.
+3. The assistant asks clarifying questions when the scope is ambiguous.
+4. The assistant generates a concise checklist draft.
 5. QA uses the result as a starting point and adjusts it for the specific task.
+
+The optional script workflow is:
+
+```bash
+python3 qa_mvp.py ask examples/feature-task.md
+python3 qa_mvp.py generate examples/feature-task.md --answers examples/feature-answers.md --out output/checklist.md
+```
 
 ### What Powers It
 
@@ -49,6 +58,7 @@ Each knowledge module contains:
 ```text
 .
 ├── README.md
+├── AGENTS.md
 ├── qa_mvp.py
 ├── knowledge/
 │   ├── patterns/
@@ -124,15 +134,19 @@ Labels: flow-ui, security, entity
 
 ## Output Format
 
-The result is a plain Markdown checklist that can be used in a PR, issue, or personal QA notes:
+The result is a plain Markdown checklist that can be used in a PR, issue, or personal QA notes.
+
+Expected style:
 
 - short task summary;
 - applied knowledge modules;
 - clarifications or open questions;
 - sectioned checklist;
 - focus areas and risks.
+- concise, task-specific checks instead of generic QA training.
+- roughly 8-15 checklist items for a normal task.
 
-## Simple Usage
+## Simple Script Usage
 
 ```bash
 python3 qa_mvp.py ask examples/feature-task.md
