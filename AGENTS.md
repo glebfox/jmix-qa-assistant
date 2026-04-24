@@ -1,14 +1,14 @@
 # Agent Instructions
 
-This repository exists to help the Jmix Framework QA team generate better task-specific QA checklists.
+This repository exists to help the Jmix Framework QA team generate better task-specific QA checklists through conversation with an AI assistant.
 
-The main user-facing workflow is agent-first: an AI assistant reads the task input and the local knowledge base, asks clarifying questions when needed, and produces a concise checklist draft. The local script `qa_mvp.py` is only a deterministic helper for validating the file format and producing a basic fallback draft.
+The main user-facing workflow is agent-first: a QA engineer describes a task in chat, the assistant reads the local knowledge base, asks clarifying questions when needed, and produces a concise checklist draft. The local script `qa_mvp.py` is only a deterministic helper for validating the file format and producing a basic fallback draft.
 
 ## Language
 
 - Keep all repository content in English.
 - Write documentation, knowledge modules, examples, prompts, generated templates, and user-facing CLI strings in English.
-- Do not add Russian text to files in this repository.
+- Do not add non-English content to repository files.
 
 ## MVP Boundaries
 

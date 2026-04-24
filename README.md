@@ -1,19 +1,19 @@
-# Jmix QA Checklist MVP
+# Jmix QA Checklist Agent Workspace
 
-A practical MVP tool for the Jmix Framework QA team: it turns a task description into clarifying questions and a structured draft checklist for testing.
+A lightweight agent workspace for the Jmix Framework QA team. A QA engineer opens this repository in an AI coding assistant, describes a task in natural language, answers clarifying questions, and receives a concise checklist draft.
 
-The intended workflow is agent-first. An AI assistant reads the task input and the local knowledge base, asks clarifying questions when needed, and produces the checklist. The local `qa_mvp.py` script is a small deterministic helper for validating the knowledge format and generating a basic fallback draft.
+The product is the agent-guided workflow, not the CLI. The local `qa_mvp.py` script is a small deterministic helper for validating the knowledge format and generating a basic fallback draft.
 
 ## What It Is
 
-This is not a platform and not an integration-heavy system. It is a separate repository with three simple parts:
+This is not a platform and not an integration-heavy system. It is a separate repository that gives an AI assistant enough local context to help QA engineers prepare task-specific checklists.
+
+It has four simple parts:
 
 1. A Markdown knowledge base with QA patterns, Jmix-specific scenarios, risk areas, and recurring regressions.
-2. A task input template.
-3. A small local CLI helper that:
-   - selects relevant knowledge modules;
-   - generates clarifying questions;
-   - builds a draft checklist in Markdown.
+2. `AGENTS.md` with instructions for how the assistant should use and maintain the repository.
+3. Optional task and answer templates for more structured input.
+4. A small local CLI helper for validating the knowledge format and producing fallback drafts.
 
 ## Why This Is A Good MVP
 
@@ -27,11 +27,13 @@ This is not a platform and not an integration-heavy system. It is a separate rep
 
 ### Workflow
 
-1. QA creates a task file from `templates/task.md`.
-2. QA asks an AI assistant to read the task and the knowledge base.
-3. The assistant asks clarifying questions when the scope is ambiguous.
-4. The assistant generates a concise checklist draft.
-5. QA uses the result as a starting point and adjusts it for the specific task.
+1. QA opens this repository in an AI assistant such as Codex.
+2. QA describes the task, acceptance criteria, and available context in chat.
+3. The assistant reads `AGENTS.md` and the relevant files under `knowledge/`.
+4. The assistant asks clarifying questions when the scope is ambiguous.
+5. The assistant generates a concise checklist draft.
+6. QA asks follow-up questions or requests edits in chat.
+7. When a repeatable pattern is discovered, the assistant updates the knowledge base.
 
 The optional script workflow is:
 
@@ -105,7 +107,7 @@ Why this format:
 
 ## Input Format
 
-The first version only needs one Markdown task file:
+The preferred input format is natural language in the assistant chat. For repeatable runs or examples, the first version can also use one Markdown task file:
 
 ```md
 # Task
@@ -130,7 +132,7 @@ Labels: flow-ui, security, entity
 ...
 ```
 
-`answers.md` is optional and can be added after the first pass of clarifying questions.
+`answers.md` is optional and can be added after the first pass of clarifying questions when a file-based flow is useful.
 
 ## Output Format
 
