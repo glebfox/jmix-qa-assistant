@@ -15,14 +15,6 @@ It has four simple parts:
 3. Optional task and answer templates for more structured input.
 4. A small local CLI helper for validating the knowledge format and producing fallback drafts.
 
-## Why This Is A Good MVP
-
-- It does not require access to the main Jmix Framework repository.
-- It does not require MCP, Jira, GitHub, TestRail, RAG, or a vector database.
-- Knowledge lives in plain Markdown files.
-- The knowledge structure can be validated on real tasks in the first week.
-- The same knowledge base can be used by an AI assistant and by the local fallback script.
-
 ## MVP Concept
 
 ### Workflow
@@ -155,19 +147,9 @@ python3 qa_mvp.py ask examples/feature-task.md
 python3 qa_mvp.py generate examples/feature-task.md --answers examples/feature-answers.md --out output/checklist.md
 ```
 
-## First Version Launch Plan
+## Pilot Plan
 
-1. Take 5-10 real Jmix QA tasks with different change types.
-2. Fill in `task.md` for each one.
-3. Generate questions and checklists.
-4. Ask QA to rate each checklist on three criteria:
-   - useful as a starting point;
-   - catches missed scenarios;
-   - not too noisy.
-5. Update the knowledge base only where it clearly improves output quality.
-6. Keep a list of task types where the MVP is already useful and a list of task types that are intentionally out of scope for now.
-
-See [docs/launch-plan.md](docs/launch-plan.md) for the pilot plan.
+See [docs/launch-plan.md](docs/launch-plan.md) for the first pilot rollout.
 
 ## MVP Limitations
 
@@ -176,21 +158,3 @@ See [docs/launch-plan.md](docs/launch-plan.md) for the pilot plan.
 - The MVP covers only the most common and repeatable task types.
 - Without an LLM, the logic remains heuristic, so some wording will stay generic.
 - Some questions will still depend on team knowledge and domain context.
-
-## Signs That It Is Worth Expanding
-
-- QA actually uses it on real tasks, not just for demos.
-- The checklist regularly reminds people about 1-3 important scenarios.
-- Time spent preparing a test pass goes down.
-- Knowledge base updates are driven by real defects and regressions.
-- The team can name concrete task categories where the MVP already helps.
-
-## What Not To Build In Version One
-
-- Jira, GitHub, or TestRail connectors;
-- MCP and tool calling;
-- a complex UI platform;
-- RAG or vector storage;
-- automatic diff reading from the main Jmix repository;
-- an attempt to cover every possible Jmix task type from day one;
-- complex scoring, prioritization, or analytics.
