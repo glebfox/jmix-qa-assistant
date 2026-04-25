@@ -41,6 +41,8 @@ When the user asks to improve the knowledge base:
 
 Generated checklists must be concise, task-specific, and action-oriented.
 
+- When returning a checklist in chat, output the checklist as raw Markdown inside a fenced `markdown` code block so the QA engineer can copy the source markup into a ticket with interactive GitHub checkboxes.
+- When writing a checklist to a file or stdout, write plain Markdown without wrapping it in an extra code fence.
 - Prefer concrete checks over educational explanations.
 - Avoid teaching QA how to test in general.
 - Avoid generic items unless they are clearly relevant to the task.
@@ -48,6 +50,7 @@ Generated checklists must be concise, task-specific, and action-oriented.
 - Aim for 8-15 checklist items for a normal task unless the task is explicitly broad.
 - Use direct checklist wording such as "Verify that...", "Check that...", "Confirm that...".
 - Each item should be testable by a QA engineer.
+- Treat generated checklists as editable drafts: highlight non-obvious risks and likely regressions, but do not try to replace QA judgment with exhaustive test design.
 - If an item is only a reminder or risk note, put it under a separate "Focus Areas" section.
 - Do not include internal reasoning in the final checklist.
 

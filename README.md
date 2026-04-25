@@ -139,6 +139,7 @@ Expected style:
 - focus areas and risks.
 - concise, task-specific checks instead of generic QA training.
 - roughly 8-15 checklist items for a normal task.
+- an editable draft that highlights non-obvious risks without replacing QA judgment.
 
 ## Simple Script Usage
 
