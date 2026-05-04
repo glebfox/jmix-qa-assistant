@@ -57,17 +57,26 @@ The assistant must not add checklist items only because they are generally good 
 
 ## Clarification Gate
 
-If the task scope is ambiguous, ask clarifying questions before generating a checklist.
+Clarifying questions are a way to change the generated result, not a way to collect nice-to-have metadata.
 
-Generate only clarifying questions when any of these are missing and materially affect module selection:
+Ask a clarifying question only when the answer would materially change at least one of:
 
-- affected views, routes, entities, components, or add-ons;
-- acceptance criteria or expected behavior;
-- roles, permissions, or security expectations;
-- supported themes, browsers, databases, languages, or configurations;
-- explicit in-scope and out-of-scope areas.
+- selected knowledge modules;
+- whether a specific checklist item from a selected module applies;
+- the concrete object wording needed to make an item testable;
+- whether a missing area should be reported as a knowledge gap.
 
-Do not fill missing scope with assumptions. If answers are not available, return a short "Knowledge Base Result" with selected modules, open questions, and knowledge gaps.
+Do not ask questions whose answers would only:
+
+- provide proper names or class names when the task already gives a usable object category, such as "the new add-on screens";
+- confirm checks already required by selected knowledge modules, such as themes, right-to-left mode, localization, or practical sizes;
+- explore areas that have no checklist content in the current knowledge base, unless the answer changes module selection or a knowledge gap.
+
+If the task facts are enough to select modules and produce at least one knowledge-backed check, generate the checklist and put non-blocking uncertainties under `Open Questions`.
+
+Generate only clarifying questions when missing information blocks module selection or all available checklist items would be generic or non-testable.
+
+Do not fill missing scope with assumptions. Return a short "Knowledge Base Result" only when no useful checklist can be generated or the user explicitly asks to proceed without answering blockers.
 
 ## Noise Control
 
@@ -78,7 +87,8 @@ Checklist items must be task-specific and knowledge-backed.
 - Omit module items that require conditions not present in the task.
 - Do not teach QA how to test. Avoid explanatory wording, generic reminders, and broad "check common scenarios" items.
 - Every checklist item should name the concrete affected object when known.
-- If the affected object is unknown, ask a question instead of writing a generic item.
+- If the exact affected object is unknown but the task gives a usable object category, use that category in checklist wording, for example "the new add-on screens".
+- Ask for the affected object only when the missing object makes a checklist item non-testable or changes module selection.
 
 ## Knowledge Gaps
 
@@ -159,7 +169,8 @@ Guidelines:
 
 - `id` must be stable and lowercase with hyphens.
 - `triggers` should contain terms that are likely to appear in task descriptions.
-- `Questions` should help narrow the testing scope.
+- `Questions` should help narrow the testing scope, but they are candidate prompts, not mandatory output.
+- Filter module questions through the clarification gate before asking them.
 - `Checklist` should contain reusable checks, not project documentation.
 - `Risks` should explain why this area deserves attention.
 

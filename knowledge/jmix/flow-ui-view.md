@@ -6,10 +6,7 @@ triggers: flow-ui, view, detail view, list view, browse view, dialog, route, nav
 always: false
 ---
 ## Questions
-- Which view classes or routes are directly affected?
-- Should the view be checked in both Lumo and Aura themes?
-- Which languages are expected to have localized messages for this view?
-- Which view sizes are important for this scenario?
+- Are there any non-standard view modes, entry points, locales, or size constraints that should narrow the default Flow UI view checks?
 
 ## Checklist
 ### Theme And Direction
