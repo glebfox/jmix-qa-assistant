@@ -2,7 +2,7 @@
 id: flow-ui-view
 title: Flow UI view changes
 applies_to: feature, bugfix
-triggers: flow-ui, view, detail view, list view, browse view, dialog, route, navigation, screen, page, lumo, aura, theme, rtl, localization, i18n, language
+triggers: flow-ui, view, detail view, list view, browse view, dialog, route, navigation, screen, page
 always: false
 ---
 ## Questions
@@ -10,9 +10,9 @@ always: false
 
 ## Checklist
 ### Theme And Direction
-- Verify the affected view in both Lumo and Aura themes when the change is visual or layout-related.
-- Check both light and dark theme variants when the task can affect colors, contrast, icons, or component state.
-- Check right-to-left mode with `dir="rtl"` when the view contains aligned content, directional icons, or horizontal layout.
+- Verify the affected view in both Lumo and Aura themes.
+- Check both light and dark theme variants for the affected view.
+- Check right-to-left mode with `dir="rtl"` for the affected view.
 
 ### Layout And Size
 - Check the view at different practical sizes, including a narrow layout and a large desktop layout.
@@ -21,7 +21,7 @@ always: false
 
 ### Localization
 - Confirm that view labels, action captions, validation messages, and empty states use message keys instead of hard-coded text.
-- Verify available localizations for known supported languages when the task changes user-facing text.
+- Verify available localizations for known supported languages.
 
 ## Risks
 - View changes can look correct in the default theme while failing in another theme, variant, locale, direction, or size.

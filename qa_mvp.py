@@ -192,7 +192,7 @@ def read_optional_text(path: Path | None) -> str:
     return text
 
 
-def task_search_blob(task: TaskInput) -> str:
+def task_search_blob(task: TaskInput, extra_text: str = "") -> str:
     parts = [
         task.title,
         task.task_type,
@@ -202,12 +202,15 @@ def task_search_blob(task: TaskInput) -> str:
         "\n".join(task.changed_areas),
         "\n".join(task.known_risks),
         task.context,
+        extra_text,
     ]
     return normalize_text("\n".join(parts))
 
 
-def select_modules(task: TaskInput, modules: Iterable[KnowledgeModule]) -> list[tuple[KnowledgeModule, list[str]]]:
-    search_blob = task_search_blob(task)
+def select_modules(
+    task: TaskInput, modules: Iterable[KnowledgeModule], extra_text: str = ""
+) -> list[tuple[KnowledgeModule, list[str]]]:
+    search_blob = task_search_blob(task, extra_text)
     selected: list[tuple[KnowledgeModule, list[str]]] = []
 
     for module in modules:
@@ -382,14 +385,16 @@ def main() -> int:
     args = parser.parse_args()
     task = parse_task(args.task)
     modules = load_knowledge_modules(KNOWLEDGE_DIR)
-    selected_modules = select_modules(task, modules)
 
     if args.command == "ask":
+        selected_modules = select_modules(task, modules)
         write_output(render_questions(task, selected_modules), args.out)
         return 0
 
     if args.command == "generate":
-        write_output(render_checklist(task, selected_modules, read_optional_text(args.answers)), args.out)
+        answers_text = read_optional_text(args.answers)
+        selected_modules = select_modules(task, modules, answers_text)
+        write_output(render_checklist(task, selected_modules, answers_text), args.out)
         return 0
 
     parser.print_help()

@@ -25,7 +25,7 @@ When the user asks for a checklist:
 1. Read the task description, acceptance criteria, and available context.
 2. Inspect relevant files under `knowledge/`.
 3. Select only knowledge modules that are relevant to the task.
-4. Ask clarifying questions if the scope is ambiguous or important risk areas are missing.
+4. Ask clarifying questions if the scope is ambiguous, important risk areas are missing, or unanswered facts gate specific checklist sections.
 5. Generate a QA checklist draft only after enough context is available.
 6. Keep the checklist editable by a QA engineer.
 
@@ -72,9 +72,11 @@ Do not ask questions whose answers would only:
 - confirm checks already required by selected knowledge modules, such as themes, right-to-left mode, localization, or practical sizes;
 - explore areas that have no checklist content in the current knowledge base, unless the answer changes module selection or a knowledge gap.
 
-If the task facts are enough to select modules and produce at least one knowledge-backed check, generate the checklist and put non-blocking uncertainties under `Open Questions`.
+Treat a module question as a gate when the answer decides whether another knowledge module, checklist section, or checklist item applies. If a gate is unanswered, ask the question before generating the gated checklist content. Do not include the gated content by using conditional wording such as "For field components..." or "If the component exposes events...".
 
-Generate only clarifying questions when missing information blocks module selection or all available checklist items would be generic or non-testable.
+If the task facts are enough to select modules, produce at least one knowledge-backed check, and no unanswered gate blocks useful checklist content, generate the checklist and put only non-blocking uncertainties under `Open Questions`.
+
+Generate only clarifying questions when missing information blocks module selection, gates the checklist sections that would make the result useful, or all available checklist items would be generic or non-testable.
 
 Do not fill missing scope with assumptions. Return a short "Knowledge Base Result" only when no useful checklist can be generated or the user explicitly asks to proceed without answering blockers.
 
@@ -85,6 +87,7 @@ Checklist items must be task-specific and knowledge-backed.
 - Do not include a checklist item unless it is clearly relevant to the task facts or selected module triggers.
 - Prefer fewer high-signal items over a complete-looking generic checklist.
 - Omit module items that require conditions not present in the task.
+- Do not include conditional checklist items that ask QA to decide whether the item applies. Ask the gating question first or omit the gated item.
 - Do not teach QA how to test. Avoid explanatory wording, generic reminders, and broad "check common scenarios" items.
 - Every checklist item should name the concrete affected object when known.
 - If the exact affected object is unknown but the task gives a usable object category, use that category in checklist wording, for example "the new add-on screens".
@@ -171,7 +174,9 @@ Guidelines:
 - `triggers` should contain terms that are likely to appear in task descriptions.
 - `Questions` should help narrow the testing scope, but they are candidate prompts, not mandatory output.
 - Filter module questions through the clarification gate before asking them.
+- Prefer a separate module over conditional checklist sections when a topic has a clear gate, such as field component behavior, extension points, or built-in UI text.
 - `Checklist` should contain reusable checks, not project documentation.
+- Checklist items should be directly applicable when the module is selected. Avoid item wording that starts with conditions such as "For field components" or "If built-in text exists".
 - `Risks` should explain why this area deserves attention.
 
 ## Jmix-Specific Focus Areas

@@ -47,6 +47,8 @@ Each knowledge module contains:
 - structured checklist items;
 - risk notes.
 
+Conditional topics should be split into narrower modules when the answer changes checklist content. For example, base UI component checks, field component behavior, extension points, and built-in UI text should not live as conditional checklist items in one broad module.
+
 ## Minimal Repository Structure
 
 ```text
@@ -96,6 +98,7 @@ Why this format:
 - QA engineers and developers can update it without generators or IDE-specific tooling.
 - It is easy to review in GitHub.
 - It is easy to start with 5-10 files instead of building an oversized knowledge system.
+- It keeps gated checks in focused modules instead of asking QA to filter conditional checklist items manually.
 
 ## Input Format
 
