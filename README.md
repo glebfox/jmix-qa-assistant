@@ -8,12 +8,13 @@ The product is the agent-guided workflow, not the CLI. The local `qa_mvp.py` scr
 
 This is not a platform and not an integration-heavy system. It is a separate repository that gives an AI assistant enough local context to help QA engineers prepare task-specific checklists.
 
-It has four simple parts:
+It has five simple parts:
 
 1. A Markdown knowledge base with QA patterns, Jmix-specific scenarios, risk areas, and recurring regressions.
-2. `AGENTS.md` with instructions for how the assistant should use and maintain the repository.
-3. Optional task and answer templates for more structured input.
-4. A small local CLI helper for validating the knowledge format and producing fallback drafts.
+2. `AGENTS.md` as the short routing entry point for the assistant.
+3. Focused protocol docs under `docs/` for checklist generation, knowledge updates, and `qa_mvp.py`.
+4. Optional task and answer templates for more structured input.
+5. A small local CLI helper for validating the knowledge format and producing fallback drafts.
 
 ## MVP Concept
 
@@ -21,9 +22,9 @@ It has four simple parts:
 
 1. QA opens this repository in an AI assistant such as Codex.
 2. QA describes the task, acceptance criteria, and available context in chat.
-3. The assistant reads `AGENTS.md` and the relevant files under `knowledge/`.
-4. The assistant asks clarifying questions when the scope is ambiguous.
-5. The assistant generates a concise checklist draft.
+3. The assistant reads `AGENTS.md`, the checklist protocol, and the relevant files under `knowledge/`.
+4. The assistant asks clarifying questions needed to determine the testing scope.
+5. The assistant generates a concise checklist draft only after the scope is clear enough.
 6. QA asks follow-up questions or requests edits in chat.
 7. When a repeatable pattern is discovered, the assistant updates the knowledge base.
 
@@ -67,6 +68,9 @@ Conditional topics should be split into narrower modules when the answer changes
 │   ├── feature-task.md
 │   └── feature-answers.md
 └── docs/
+    ├── checklist-generation.md
+    ├── knowledge-base.md
+    ├── qa-mvp.md
     └── launch-plan.md
 ```
 

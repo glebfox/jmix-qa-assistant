@@ -8,9 +8,9 @@ Validate that an agent-guided QA checklist workflow helps the Jmix QA team prepa
 
 1. QA opens this repository in an AI assistant such as Codex.
 2. QA describes a real task in chat using the task description, acceptance criteria, and any available context.
-3. The assistant reads `AGENTS.md` and relevant files under `knowledge/`.
-4. The assistant asks clarifying questions when the testing scope is unclear.
-5. The assistant generates a concise checklist draft.
+3. The assistant reads `AGENTS.md`, the checklist protocol, and relevant files under `knowledge/`.
+4. The assistant asks clarifying questions needed to determine the testing scope.
+5. The assistant generates a concise checklist draft only after the scope is clear enough.
 6. QA reviews the result and asks for corrections in chat.
 7. When the assistant misses a repeatable pattern, QA asks it to update the knowledge base.
 
