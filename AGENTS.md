@@ -26,7 +26,7 @@ When the user asks for a checklist:
 2. Inspect relevant files under `knowledge/`.
 3. Select only knowledge modules that are relevant to the task.
 4. Ask clarifying questions if the scope is ambiguous or important risk areas are missing.
-5. Generate a QA checklist draft after enough context is available.
+5. Generate a QA checklist draft only after enough context is available.
 6. Keep the checklist editable by a QA engineer.
 
 When the user asks to improve the knowledge base:
@@ -36,6 +36,62 @@ When the user asks to improve the knowledge base:
 3. Add a new module only when the knowledge has a clear reusable scope.
 4. Keep modules small and practical.
 5. Do not add knowledge that does not improve future checklist generation.
+
+## Knowledge-Grounded Output
+
+The assistant must stay knowledge-grounded for every checklist-generation request.
+
+- Do not generate checklist items from general Jmix experience, industry QA practice, or assumptions.
+- Use only:
+  - facts explicitly provided by the user;
+  - checklist items from selected `knowledge/` modules;
+  - risks from selected `knowledge/` modules.
+- If an important scenario is not covered by selected modules, report it as a knowledge gap, not as a checklist item.
+- The assistant may use general expertise only to ask clarifying questions and identify missing knowledge areas.
+
+## Checklist Source Policy
+
+Generated checklist items must be traceable to the task input or to selected `knowledge/` modules.
+
+The assistant must not add checklist items only because they are generally good QA practice. If the repository does not contain knowledge for an area, the assistant should ask a clarifying question or report a knowledge gap instead of inventing coverage.
+
+## Clarification Gate
+
+If the task scope is ambiguous, ask clarifying questions before generating a checklist.
+
+Generate only clarifying questions when any of these are missing and materially affect module selection:
+
+- affected views, routes, entities, components, or add-ons;
+- acceptance criteria or expected behavior;
+- roles, permissions, or security expectations;
+- supported themes, browsers, databases, languages, or configurations;
+- explicit in-scope and out-of-scope areas.
+
+Do not fill missing scope with assumptions. If answers are not available, return a short "Knowledge Base Result" with selected modules, open questions, and knowledge gaps.
+
+## Noise Control
+
+Checklist items must be task-specific and knowledge-backed.
+
+- Do not include a checklist item unless it is clearly relevant to the task facts or selected module triggers.
+- Prefer fewer high-signal items over a complete-looking generic checklist.
+- Omit module items that require conditions not present in the task.
+- Do not teach QA how to test. Avoid explanatory wording, generic reminders, and broad "check common scenarios" items.
+- Every checklist item should name the concrete affected object when known.
+- If the affected object is unknown, ask a question instead of writing a generic item.
+
+## Knowledge Gaps
+
+When the assistant sees an important repeatable area that is not covered by `knowledge/`, it must not silently include it in the checklist.
+
+Instead, add a short section:
+
+```md
+## Knowledge Gaps
+- `add-on-packaging`: no selected module covers add-on installation, starter metadata, auto-configuration, or packaging checks.
+```
+
+Suggest updating the knowledge base only after the current result is shown.
 
 ## Checklist Style
 
