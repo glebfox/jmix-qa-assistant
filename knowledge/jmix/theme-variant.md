@@ -1,6 +1,6 @@
 ---
-id: ui-component-theme-variant
-title: Flow UI component theme variants
+id: theme-variant
+title: Component theme variants
 applies_to: feature, bugfix
 triggers: theme variant, theme variants, component variant
 always: false
