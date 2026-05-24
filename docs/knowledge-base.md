@@ -2,6 +2,37 @@
 
 Use this protocol when the user asks to improve the knowledge base.
 
+## What the Knowledge Base Is For (MVP 1)
+
+The MVP 1 knowledge base feeds the assistant only two things:
+
+- `knowledge/jmix/` — **reminder modules** with non-obvious scenarios for a specific Jmix topic. These produce checklist items.
+- `knowledge/regressions/` — **breadcrumb entries** for regression-prone areas. These produce links to past tickets, not checklist items. See [regressions.md](regressions.md) for the format and roadmap.
+
+When in doubt about which folder a piece of knowledge belongs in: if it produces a check item, it goes in `knowledge/jmix/`; if it points the QA engineer at past cases for re-verification, it goes in `knowledge/regressions/`.
+
+## Non-Obvious Filter for Authors
+
+A module item belongs in the knowledge base only if it captures something **non-obvious** — a scenario that QA engineers and developers commonly miss when focused on the main task, even when they are experienced.
+
+This filter is applied **by authors at PR review time, not by the assistant at generation time**. The assistant must not drop or add items based on its own judgment of obviousness — its only filter is whether an item is grounded in a selected module (see [checklist-generation.md](checklist-generation.md)).
+
+Do not add module items that:
+
+- Repeat standard QA training (for example, "verify the form submits with valid data").
+- Restate the task's acceptance criteria.
+- Describe generic best practice not specific to Jmix.
+- Are reminders an experienced engineer would always remember without prompting.
+- Teach QA how to test rather than what to test.
+
+Do add module items that:
+
+- Capture footguns specific to Jmix internals (lifecycle, facets, data loaders, etc.).
+- Capture cross-feature interactions that are easy to forget when working on one feature.
+- Capture conditions, states, or combinations that history shows are routinely missed.
+
+If a single item is hard to classify, leave it out of the module and start a discussion. The cost of a missing item is small; the cost of a noisy item is large because it dilutes the signal of every other item.
+
 ## Updating Knowledge
 
 1. Understand whether the new knowledge is a repeatable pattern, Jmix-specific scenario, risk area, or recurring regression.

@@ -2,6 +2,8 @@
 
 A lightweight agent workspace for the Jmix Framework QA team. A QA engineer opens this repository in an AI coding assistant, describes a task in natural language, answers clarifying questions, and receives a concise checklist draft.
 
+The MVP 1 output is narrow on purpose: **reminders about non-obvious scenarios** that are almost never written into task descriptions, plus **breadcrumb links to past tickets** for regression-prone areas. It is an assistant for both QA engineers and developers — not a full QA coverage list and not a replacement for QA judgment.
+
 The product is the agent-guided workflow, not the CLI. The local `qa_mvp.py` script is a small deterministic helper for validating the knowledge format and generating a basic fallback draft.
 
 ## What It Is
@@ -143,9 +145,10 @@ Expected style:
 - applied knowledge modules;
 - clarifications or open questions;
 - sectioned checklist;
+- regression breadcrumbs (links to past tickets) when relevant;
 - focus areas and risks.
 - concise, task-specific checks instead of generic QA training.
-- roughly 8-15 checklist items for a normal task.
+- length determined by what knowledge modules justify, not by a quota; zero items is a valid result.
 - an editable draft that highlights non-obvious risks without replacing QA judgment.
 
 ## Simple Script Usage
@@ -158,6 +161,10 @@ python3 qa_mvp.py generate examples/feature-task.md --answers examples/feature-a
 ## Pilot Plan
 
 See [docs/launch-plan.md](docs/launch-plan.md) for the first pilot rollout.
+
+## Roadmap
+
+See [docs/roadmap.md](docs/roadmap.md) for work deferred to MVP 2 and beyond, including the development plan for the regression knowledge base in [docs/regressions.md](docs/regressions.md).
 
 ## MVP Limitations
 

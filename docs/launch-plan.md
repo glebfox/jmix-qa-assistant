@@ -2,7 +2,7 @@
 
 ## Goal
 
-Validate that an agent-guided QA checklist workflow helps the Jmix QA team prepare task-specific checks faster and miss fewer important scenarios.
+Validate that an agent-guided workflow helps the Jmix QA team and developers catch non-obvious scenarios they would routinely miss, and re-check regression-prone areas via breadcrumbs to past tickets. The goal is to prove the assistant adds real signal — not to produce full QA coverage.
 
 ## Pilot Workflow
 
@@ -57,12 +57,4 @@ If the result is mostly generic or too noisy, improve the knowledge base before 
 
 ## Version One Boundaries
 
-Do not add these in version one:
-
-- Jira, GitHub, or TestRail connectors.
-- MCP and tool calling.
-- A complex UI platform.
-- RAG or vector storage.
-- Automatic diff reading from the main Jmix Framework repository.
-- An attempt to cover every possible Jmix task type.
-- Complex scoring, prioritization, or analytics.
+See [roadmap.md](roadmap.md) for items deliberately deferred from MVP 1.

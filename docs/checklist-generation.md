@@ -43,6 +43,8 @@ If task facts are enough to select modules and produce useful knowledge-backed c
 
 Generate only clarifying questions when missing information blocks module selection, gates the checklist sections that would make the result useful, or all available checklist items would be generic or non-testable.
 
+A valid checklist may also contain zero items if, after applying knowledge grounding, no module-traced item applies to the task. Returning a short result with the selected modules and any clarifying questions that produced real value is preferred over padding the output with invented coverage.
+
 Do not fill missing scope with assumptions. Return a short "Knowledge Base Result" only when no useful checklist can be generated or the user explicitly asks to proceed without answering blockers.
 
 ## Knowledge-Grounded Output
@@ -57,6 +59,8 @@ The assistant must stay knowledge-grounded for every checklist-generation reques
 - If an important scenario is not covered by selected modules, report it as a knowledge gap, not as a checklist item.
 
 Generated checklist items must be traceable to the task input or to selected `knowledge/` modules.
+
+Before emitting any checklist item, the assistant must internally name the specific selected `knowledge/` module path that justifies it. If no such path exists, the item is dropped — not softened, not generalized, not kept "for completeness". Dropping an item is always preferred over inventing one.
 
 The assistant must not add checklist items only because they are generally good QA practice. If the repository does not contain knowledge for an area, ask a clarifying question or report a knowledge gap instead of inventing coverage.
 
@@ -87,12 +91,22 @@ When the assistant sees an important repeatable area that is not covered by `kno
 
 Instead, add a short section:
 
-```md
+~~~md
 ## Knowledge Gaps
 - `add-on-packaging`: no selected module covers add-on installation, starter metadata, auto-configuration, or packaging checks.
-```
+~~~
 
 Suggest updating the knowledge base only after the current result is shown.
+
+## Regression Breadcrumbs
+
+Selected `knowledge/regressions/` modules contribute breadcrumb links to past tickets, not checklist items.
+
+- Render breadcrumb entries in a separate `## Regression Breadcrumbs` section of the output.
+- Use the link list from the module verbatim, preserving issue numbers and titles.
+- Do not turn breadcrumbs into `[ ]` checkbox items.
+- Do not derive additional checks from the linked tickets — the linked content is for QA to review manually.
+- See [knowledge-base.md](knowledge-base.md) and [regressions.md](regressions.md) for the regression knowledge format and roadmap.
 
 ## Checklist Style
 
@@ -104,7 +118,7 @@ Generated checklists must be concise, task-specific, and action-oriented.
 - Avoid teaching QA how to test in general.
 - Avoid generic items unless they are clearly relevant to the task.
 - Avoid long lists by default.
-- Aim for 8-15 checklist items for a normal task unless the task is explicitly broad.
+- Length is determined by what selected knowledge modules justify, not by a quota. A typical output has a few to roughly fifteen items; zero items is a valid result when no module-traced item applies.
 - Use direct checklist wording such as "Verify that...", "Check that...", "Confirm that...".
 - Each item should be testable by a QA engineer.
 - Treat generated checklists as editable drafts: highlight non-obvious risks and likely regressions, but do not try to replace QA judgment with exhaustive test design.
@@ -113,7 +127,7 @@ Generated checklists must be concise, task-specific, and action-oriented.
 
 Recommended output sections:
 
-```md
+~~~md
 # QA Checklist
 
 ## Scope
@@ -123,12 +137,16 @@ Recommended output sections:
 - ...
 
 ## Checks
-### Main Flow
+### Section From Module 1
 - [ ] ...
 
-### Regression
+### Section From Module 2
 - [ ] ...
+
+## Regression Breadcrumbs
+- [#1234 issue title](https://github.com/jmix-framework/jmix/issues/1234)
+- [#1567 issue title](https://github.com/jmix-framework/jmix/issues/1567)
 
 ## Focus Areas
 - ...
-```
+~~~
