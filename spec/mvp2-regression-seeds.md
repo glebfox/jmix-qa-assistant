@@ -4,7 +4,7 @@ This file holds early drafts of full functional QA scope for regression-prone ar
 
 Its only purpose is to preserve detailed reusable check content discovered during MVP 1 work, so MVP 2 has a starting point. Do not link from this file into `knowledge/` and do not let MVP 1 outputs derive from it.
 
-When the MVP 2 format is decided (see [regressions.md](regressions.md) and [roadmap.md](roadmap.md)), this material is migrated into the new format.
+When the MVP 2 format is decided (see [../docs/regressions.md](../docs/regressions.md) and [roadmap.md](roadmap.md)), this material is migrated into the new format.
 
 ---
 
